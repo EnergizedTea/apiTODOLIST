@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, abort
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -13,12 +14,22 @@ def home():
 
 @app.route('/api/v1/tasks', methods=['POST'])
 def create_task():
-    print("entreee")
     if not request.json:
-        print("aaaaaaa")
-        return 'aaaaaa'#abort(404)
-    print("eeeeee")
-    return 'eeeee'
+        abort(400, error = 'Missing body in request')
+    if 'name' not in request.json:
+        return jsonify({"ERROR":"Missing name"}), 400
+    if 'category' not in request.json:
+        return jsonify({"ERROR":"Missing category"}), 400
+    this_time = datetime.now()
+    task = {
+        'id': len(tasks) + 1,
+        'name': request.json['name'],
+        'category': False,
+        'created': this_time,
+        'updated': this_time,
+    }
+    tasks.append(task)
+    return jsonify({'task': task}), 201
 
 
 if __name__ == "__main__":
