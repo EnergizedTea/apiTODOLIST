@@ -32,5 +32,7 @@ def create_task():
     return jsonify({'task': task}), 201
 
 
+# THIS RIGHT HERE IS THE REASON OUR APP RUNS LET'S GOOOOOOOOOOOOOOOOOOOOOO
 if __name__ == "__main__":
+    # YOU BETTER MAKE SURE DEBUG IS SET TO FALSE WHEN YOU DEPLOY BOI
     app.run(debug=True)
