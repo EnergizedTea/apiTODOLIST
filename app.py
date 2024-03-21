@@ -30,7 +30,7 @@ def create_task():
         return jsonify({"ERROR":"Missing name"}), 400
     if 'category' not in request.json:
         return jsonify({"ERROR":"Missing category"}), 400
-    task = Task(name=request.json[name], status=False)
+    task = Task(name=(request.json['name']), category=(request.json['category']), status=False)
     db.session.add(task)
     db.session.commit()
     return jsonify({'Task added!'}), 201
