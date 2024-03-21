@@ -17,16 +17,12 @@ class Task(db.Model):
     # Representación
     def _repr_(self):        
         return f'<Task {self.name} under {self.category} with status {self.status}>'
-            
-
-BASE_URL = '/api/v1/'
 
 @app.route('/')
 def home():
     return 'Welcome to my To-Do List'
 
-
-@app.route('/api/v1/tasks', methods=['POST'])
+@app.route('/create')
 def create_task():
     if not request.json:
         abort(400, error = 'Missing body in request')
@@ -34,16 +30,10 @@ def create_task():
         return jsonify({"ERROR":"Missing name"}), 400
     if 'category' not in request.json:
         return jsonify({"ERROR":"Missing category"}), 400
-    this_time = datetime.now()
-    task = {
-        'id': len(tasks) + 1,
-        'name': request.json['name'],
-        'category': False,
-        'created': this_time,
-        'updated': this_time,
-    }
-    tasks.append(task)
-    return jsonify({'task': task}), 201
+    task = Task(name=request.json[name], status=False)
+    db.session.add(task)
+    db.session.commit()
+    return jsonify({'Task added!'}), 201
 
 
 # THIS RIGHT HERE IS THE REASON OUR APP RUNS LET'S GOOOOOOOOOOOOOOOOOOOOOO
