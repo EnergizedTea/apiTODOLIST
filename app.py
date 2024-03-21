@@ -12,22 +12,14 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     category = db.Column(db.String(120), nullable=False)
-    created = db.Column(datetime(timezone=True), server_default=func.now())
-    updated = db.Column(datetime(timezone=True), onupdate=func.now())
     status = db.Column(db.Boolean, default=False)
 
     # Representación
-    def _repr_(self):
-        if self.updated is None:
-            return f'<Task {self.name} under {self.category} with status {self.updated} created {self.created}>'
-        else:
-            return f'<Task {self.name} under {self.category} with status {self.updated} created {self.created} and updated {self.updated}>'
+    def _repr_(self):        
+        return f'<Task {self.name} under {self.category} with status {self.status}>'
             
 
 BASE_URL = '/api/v1/'
-
-
-
 
 @app.route('/')
 def home():
