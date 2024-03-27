@@ -2,7 +2,6 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,python,flask
 
 ###Files I added###
-credentials.py
 creds.py
 
 ### Flask ###
