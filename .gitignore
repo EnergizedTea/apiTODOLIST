@@ -3,6 +3,7 @@
 
 ###Files I added###
 credentials.py
+creds.py
 
 ### Flask ###
 instance/*
