@@ -1,10 +1,10 @@
+import os
 from flask import Flask, jsonify, request, abort
 from flask_sqlalchemy import SQLAlchemy
-import creds
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = creds.url
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 db = SQLAlchemy(app)
 BASE_URL = '/api/v1/'
