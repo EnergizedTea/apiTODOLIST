@@ -1,6 +1,6 @@
+import creds
 from flask import Flask, jsonify, request, abort
 from flask_sqlalchemy import SQLAlchemy
-import creds
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -61,22 +61,15 @@ def createTaskWithId(id):
     else:
         return jsonify({'Id already in existace'}), 409
 
-@app.route(BASE_URL + 'change/<int:id>', methods=['PATCH'])
-def updateTask(id):
-    task = Task.query.get(id)
-    if task is None:
-        abort(404, error="Task not found!")
-        
-    if 'name' and 'category' not in request.json:
-        abort(400, error = 'No body, nothing to change')
-        
-    if 'name' in request.json:
-        task.name = request.json['name']
-    if 'category'in request.json:
-        task.category = request.json['category']
-        
+@app.route(BASE_URL + '/tasks/<int:id>', methods=['PUT'])
+def update(id):
+    task =  Task.query.get(id)
+    if not task:
+        abort(400)
+    task.status = not task.status
     db.session.commit()
     return jsonify('Task has been changed has been succesfully changed'), 200
+
     
 @app.route(BASE_URL + 'tasks', methods=['GET'])
 def getTasks():
@@ -102,11 +95,7 @@ def deleteTask(id):
 
 
     
-# THIS RIGHT HERE IS THE REASON OUR APP RUNS LET'S GOOOOOOOOOOOOOOOOOOOOOO
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        print("Tables created...")
-
-    # YOU BETTER MAKE SURE DEBUG IS SET TO FALSE WHEN YOU DEPLOY BOI
     app.run(debug=True)
