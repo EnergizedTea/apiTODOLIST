@@ -1,10 +1,13 @@
-import creds
 from flask import Flask, jsonify, request, abort
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = creds.url
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 
 db = SQLAlchemy(app)
 BASE_URL = '/api/v1/'
@@ -68,7 +71,7 @@ def update(id):
         abort(400)
     task.status = not task.status
     db.session.commit()
-    return jsonify('Task has been changed has been succesfully changed'), 200
+    return jsonify({'Task has been changed has been succesfully changed' : task.show()}), 201
 
     
 @app.route(BASE_URL + 'tasks', methods=['GET'])
